@@ -1,5 +1,5 @@
 {
-        "name": "kit",
+        "name": "seven-crawl-kit",
         "version": "1.0.0",
         "main": "index.ts",
         "scripts": {
@@ -24,19 +24,18 @@
                 "supertest": "^5.0.0",
                 "ts-jest": "^26.4.3",
                 "ts-node": "^9.0.0",
-                "typescript": "^4.0.5"
-        },
-        "dependencies": {
+                "typescript": "^4.0.5",
                 "@types/download": "^6.2.4",
                 "download": "^8.0.0"
         },
+        "dependencies": {},
         "repository": {
                 "type": "git",
-                "url": "git+https://github.com/Heaty566/node-kit.git"
+                "url": "git+https://github.com/SEVEN-COMPANY/Crawl-KIT.git"
         },
         "bugs": {
-                "url": "https://github.com/Heaty566/node-kit/issues"
+                "url": "https://github.com/SEVEN-COMPANY/Crawl-KIT/issues"
         },
-        "homepage": "https://github.com/Heaty566/node-kit#readme",
+        "homepage": "https://github.com/SEVEN-COMPANY/Crawl-KIT#readme",
         "description": ""
 }
