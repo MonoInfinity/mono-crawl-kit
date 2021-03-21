@@ -3,23 +3,21 @@
         "version": "1.0.0",
         "main": "index.ts",
         "scripts": {
-                "start:dev": "NODE_ENV=development  nodemon --exec ts-node index.ts",
-                "test": "NODE_ENV=test jest",
-                "test:watch": "NODE_ENV=test  jest  --watchAll --runInBand --detectOpenHandles"
+                "start:dev": "echo \"Please wait this may take up to 10 minutes\" && ts-node index.ts",
+                "test": "jest",
+                "test:watch": "jest  --watchAll --runInBand --detectOpenHandles"
         },
         "author": {
                 "name": "Pham Vinh Nhan",
                 "email": "heaty566@gmail.com",
                 "url": "https://github.com/Heaty566"
         },
-        "license": "ISC",
+        "license": "MIT",
         "devDependencies": {
                 "@types/jest": "^26.0.15",
                 "@types/node": "^14.14.5",
                 "jest": "^26.6.1",
-                "nodemon": "^2.0.6",
                 "prettier": "^2.1.2",
-                "pretty-quick": "^3.1.0",
                 "puppeteer": "^8.0.0",
                 "supertest": "^5.0.0",
                 "ts-jest": "^26.4.3",
