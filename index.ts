@@ -2,39 +2,37 @@
 import puppeteer from 'puppeteer';
 import fs from 'fs';
 import download from 'download';
+import { getNewName } from './helper';
 
-async function boot() {
+async function bootCrawl() {
         const browser = await puppeteer.launch({
-                slowMo: 5000,
+                // the amount of delay time for each action by bot
+                slowMo: 500,
+                // False: show the browser, True: not show the browser
+                headless: false,
         });
-        const mapKey = 'male';
 
         const page = await browser.newPage();
         await page.goto(
-                'https://us.wconcept.com/wplp/men/clothing.html?is_first_call=yes&sort=releaseDate+desc&start=0&rows=108'
+                'https://divineshop.vn/steam?filter_price_from=0&filter_price_to=15000000&sort=op.quantity&order=DESC&limit=100'
         );
 
+        // get text data
         const items = await page.evaluate(() => {
                 let data = [];
-                for (let index = 1; index <= 72; index++) {
+                for (let index = 1; index <= 5; index++) {
                         const name = document.querySelector(
-                                `#search-product-list > div.products.wrapper.grid.products-grid > ol > li:nth-child(${index}) > div > div.product-item-details > strong > a`
+                                `body > div.container > div.list-sp > div.list-container > div > div:nth-child(${index}) > div > div.item-info > div.item-title > a`
                         );
-                        const price = document.querySelector(
-                                `#search-product-list > div.products.wrapper.grid.products-grid > ol > li:nth-child(${index}) > div > div.product-item-details > div.price-box.price-final_price > span.normal-price > span > span > span`
-                        );
+
                         const img = document.querySelector(
-                                `#search-product-list > div.products.wrapper.grid.products-grid > ol > li:nth-child(${index}) > div > div.product-image-block > a > img`
+                                `body > div.container > div.list-sp > div.list-container > div > div:nth-child(${index}) > div > div.img > a > img`
                         );
 
                         if (name) {
                                 data.push({
                                         name: name?.textContent,
-                                        sex: 'male',
-                                        price: price?.textContent?.replace('$', '').replace('.00', ''),
-                                        size: ['XS', 'S', 'M', 'L', 'XL'],
-                                        color: ['slategrey', 'grey', 'beige'],
-                                        imageUrl: img?.getAttribute('data-src'),
+                                        imageUrl: img?.getAttribute('src'),
                                 });
                         }
                 }
@@ -42,11 +40,15 @@ async function boot() {
                 return data;
         });
 
+        // download file data
+        const folderPath = './output/images';
         for (let item = 0; item < items.length; item++) {
-                await download(`https://us.wconcept.com${items[item].imageUrl}`, './output/images', {
-                        filename: `image-${mapKey}-${item}.jpg`,
-                });
-                items[item].imageUrl = `./output/images/image-${mapKey}-${item}.jpg`;
+                const filename = getNewName(items[item].imageUrl, 10, 'lettersLowerCase');
+                if (items[item].imageUrl?.includes('https')) {
+                        await download(`${items[item].imageUrl}`, folderPath, { filename });
+                } else await download(`https://divineshop.vn/${items[item].imageUrl}`, folderPath, { filename });
+
+                items[item].imageUrl = folderPath + '/' + filename;
         }
 
         const data = JSON.stringify(items);
@@ -62,4 +64,4 @@ async function boot() {
         await browser.close();
 }
 
-boot();
+bootCrawl();
